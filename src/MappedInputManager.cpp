@@ -5,12 +5,13 @@
 decltype(InputManager::BTN_BACK) MappedInputManager::mapButton(const Button button) const {
   const auto frontLayout = static_cast<CrossPointSettings::FRONT_BUTTON_LAYOUT>(SETTINGS.frontButtonLayout);
   const auto sideLayout = static_cast<CrossPointSettings::SIDE_BUTTON_LAYOUT>(SETTINGS.sideButtonLayout);
+  const bool is_landscape_ccw = SETTINGS.orientation == CrossPointSettings::ORIENTATION::LANDSCAPE_CCW;
 
   switch (button) {
     case Button::Back:
       switch (frontLayout) {
         case CrossPointSettings::LEFT_RIGHT_BACK_CONFIRM:
-          return InputManager::BTN_LEFT;
+          return is_landscape_ccw ? InputManager::BTN_RIGHT : InputManager::BTN_LEFT;
         case CrossPointSettings::LEFT_BACK_CONFIRM_RIGHT:
           return InputManager::BTN_CONFIRM;
         case CrossPointSettings::BACK_CONFIRM_LEFT_RIGHT:
@@ -20,9 +21,9 @@ decltype(InputManager::BTN_BACK) MappedInputManager::mapButton(const Button butt
     case Button::Confirm:
       switch (frontLayout) {
         case CrossPointSettings::LEFT_RIGHT_BACK_CONFIRM:
-          return InputManager::BTN_RIGHT;
+          return is_landscape_ccw ? InputManager::BTN_LEFT : InputManager::BTN_RIGHT;
         case CrossPointSettings::LEFT_BACK_CONFIRM_RIGHT:
-          return InputManager::BTN_LEFT;
+          return is_landscape_ccw ? InputManager::BTN_RIGHT : InputManager::BTN_LEFT;
         case CrossPointSettings::BACK_CONFIRM_LEFT_RIGHT:
         default:
           return InputManager::BTN_CONFIRM;
@@ -34,7 +35,7 @@ decltype(InputManager::BTN_BACK) MappedInputManager::mapButton(const Button butt
           return InputManager::BTN_BACK;
         case CrossPointSettings::BACK_CONFIRM_LEFT_RIGHT:
         default:
-          return InputManager::BTN_LEFT;
+          return is_landscape_ccw ? InputManager::BTN_RIGHT : InputManager::BTN_LEFT;
       }
     case Button::Right:
       switch (frontLayout) {
@@ -43,7 +44,7 @@ decltype(InputManager::BTN_BACK) MappedInputManager::mapButton(const Button butt
         case CrossPointSettings::BACK_CONFIRM_LEFT_RIGHT:
         case CrossPointSettings::LEFT_BACK_CONFIRM_RIGHT:
         default:
-          return InputManager::BTN_RIGHT;
+          return is_landscape_ccw ? InputManager::BTN_LEFT : InputManager::BTN_RIGHT;
       }
     case Button::Up:
       return InputManager::BTN_UP;
